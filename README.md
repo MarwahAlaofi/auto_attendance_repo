@@ -1,6 +1,6 @@
 # Description
 This script can be used to automate marking student attendance at taibahu.
-<br>A **demo** can be found [Here](https://vimeo.com/user124319890/review/464170126/ceae182061)
+<br>A **demo** can be found [Here](https://vimeo.com/464170126)
 <br>When using the script, the browser can be hidden and the **submit button** can be activated for a *lazier* experience! :)
 
 # How to use?
