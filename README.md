@@ -5,12 +5,12 @@ This script can be used to automate marking student attendance at taibahu.
 
 # How to use?
 Follow the steps below to get things up and running:
-1. Download <strong>python</strong>: https://www.python.org/downloads/
+1. Download and install <strong>python</strong>: https://www.python.org/downloads/
 2. Add Python directory to the *environment path*
-3. Download **selenium** and **pandas** by running the following commands:
+3. Download and install **selenium** and **pandas** using the following commands:
 <code>python -m pip install selenium </code><br>
 <code>python -m pip install pandas</code>
-4. Install **chrome driver**: https://chromedriver.chromium.org/downloads
+4. Download **chrome driver**: https://chromedriver.chromium.org/downloads
 5. Add chrome driver directory to the *environment path*.
 6. **Modify** the script by setting the *parameter section*.
 7. **Run** the script using the following command:<br>
@@ -18,8 +18,8 @@ Follow the steps below to get things up and running:
 
 # Troubleshooting
 The script is built and primarily tested on **Mac OS**. Some successful testing has been done on **Windows 10** as well.
-<br>The code is build based on some assumptions which may not hold true in all cases and many issues are likely to arise while using the script. Below I will add some common issues and how to address them:     
-1. [Element not found error] ➔ increase the waiting time to ensure a completely downloaded DOM (slow internet connection lead to slow DOM download) <br>
+<br>The code is built based on some assumptions which may not hold true in all cases and many issues are likely to arise while using the script. Below I will add some common issues and how to address them:     
+1. [Element not found error] ➔ increase the waiting time to ensure a completely downloaded DOM (slow internet connection leads to slow DOM download) <br>
 :
 
 # Contribute
