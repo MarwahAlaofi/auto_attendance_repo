@@ -1,7 +1,7 @@
 
 #############################
 # Author: Marwah Alaofi
-# Last modified: 1st of Oct 2020
+# Last modified: 3rd of Oct 2020
 #############################
 
 from selenium import webdriver
@@ -55,10 +55,10 @@ else:
     lecture_date = datetime.today()
 
 
-temp_directory_path = os.getcwd() + "/atten_tmp"
+
+temp_directory_path = os.path.join(os.getcwd() , "atten_tmp")
 if not os.path.exists(temp_directory_path):
     os.mkdir(temp_directory_path)
-
 
 # setting the browser's preferences to save to the current working directory
 chrome_options = webdriver.ChromeOptions()
@@ -67,7 +67,7 @@ chrome_options.add_experimental_option('prefs', prefs)
 driver = webdriver.Chrome(options=chrome_options)
 
 print("Please wait .............")
-print("opening blackboard ...")
+print("openning blackboard ...")
 driver.get('https://lms.taibahu.edu.sa')
 
 # find the login elements
@@ -136,13 +136,13 @@ driver.find_element_by_xpath('//*[@id="session-report"]/div/div/div/aside/ul/li[
 # wait until the download is completed
 #time.sleep(5)
 
-print('opening the academic services website ...')
+print('openning the academic services website ...')
 driver.get('https://eas.taibahu.edu.sa/TaibahReg/teachers_login.jsp')
 username = driver.find_element_by_xpath('//*[@id="Table_01"]/tbody/tr[4]/td/table[1]/tbody/tr[2]/td/form/table/tbody/tr[2]/td[2]/input')
 password = driver.find_element_by_xpath('//*[@id="Table_01"]/tbody/tr[4]/td/table[1]/tbody/tr[2]/td/form/table/tbody/tr[3]/td[2]/input')
 ok_button = driver.find_element_by_xpath('//*[@id="Table_01"]/tbody/tr[4]/td/table[1]/tbody/tr[2]/td/form/table/tbody/tr[4]/td[2]/div/input[1]')
 
-print('logging in the academic services website ...')
+print('logging into the academic services website ...')
 username.send_keys(ES_USERNAME)
 password.send_keys(ES_PASSWORD)
 ok_button.click()
@@ -150,9 +150,11 @@ ok_button.click()
 section_table_rows = driver.find_elements_by_xpath('//*[@id="Table_01"]/tbody/tr[2]/td/table/tbody/tr/td[1]/p[1]/table[2]/tbody/tr')
 for section_row in section_table_rows[1:len(section_table_rows)-1]:
     section_link = section_row.find_element_by_xpath('td[4]/a')
-    if(section_link.get_attribute('innerText')== SECTION):
+    if(section_link.get_attribute('innerText') == SECTION):
         section_link.click()
         break;
+#section_link = driver.find_element_by_xpath('//*[@id="Table_01"]/tbody/tr[2]/td/table/tbody/tr/td[1]/p[1]/table[2]/tbody/tr['+ str(SECTION_ROW_NO+1) +']/td[4]/a')
+#section_link.click()
 
 date = driver.find_element_by_xpath('//*[@id="Table_01"]/tbody/tr[2]/td/table/tbody/tr/td[1]/table/tbody/tr[2]/td/form/table/tbody/tr[1]/td[2]/input')
 duration = driver.find_element_by_xpath('//*[@id="Table_01"]/tbody/tr[2]/td/table/tbody/tr/td[1]/table/tbody/tr[2]/td/form/table/tbody/tr[1]/td[1]/span[1]/select')
@@ -167,7 +169,7 @@ lecture_type.send_keys("محاضرة")
 # (Name	Username	Role	AttendeeType	First join	Last leave	Total time	Joins)
 print('reading the csv file ...')
 
-path = r"*.csv"
+path = os.path.join(temp_directory_path, r"*.csv")
 bb_attendance = pd.read_csv(glob.glob(path)[0])
 
 # delete the instructor row
@@ -226,13 +228,12 @@ for s in student_list:
         print(s)
 print("-----------------------------------")
 
-# [a feature to be added] send notification/email if absence is more than the threshold
+# send notification/email if absence is more than the threshold
 ###############################################################
 
 # move the attendance file to the archive folder
-path = temp_directory_path + '/' + r"*.csv"
 if not os.path.exists(ARCHIVE_FOLDER_NAME):
   os.mkdir(ARCHIVE_FOLDER_NAME)
-os.replace(glob.glob(path)[0], ARCHIVE_FOLDER_NAME + '/' + SECTION + '_' +lecture_date.strftime("%d-%m-%y") + '.csv')
-os.rmdir(temp_directory_path)
-print('attendance csv file is archived at ' + os.getcwd() + '/' + ARCHIVE_FOLDER_NAME + '/ \n')
+file_name = SECTION + '_' + lecture_date.strftime("%d-%m-%y") + '.csv'
+os.replace(glob.glob(path)[0], os.path.join(ARCHIVE_FOLDER_NAME, file_name))
+print('attendance csv file is archived at ' + os.path.join(os.getcwd(), ARCHIVE_FOLDER_NAME) + '\n')
