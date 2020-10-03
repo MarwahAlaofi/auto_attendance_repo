@@ -18,8 +18,15 @@ Follow the steps below to get things up and running:
 8. Enjoy :tada:
 # Troubleshooting
 The script is built and primarily tested on **Mac OS**. Some successful testing has been done on **Windows 10** as well.
-<br>The code is built based on some assumptions which may not hold true in all cases and many issues are likely to arise while using the script. Below I will add some common issues and how to address them:     
-1. [Element not found error] ➔ increase the waiting time to ensure a completely downloaded DOM (slow internet connection leads to slow DOM download) <br>
+<br>The code is built based on some assumptions (e.g., there is no more than one session/day) which may not be true in all cases and many issues are likely to arise while using the script. Below I will add some common issues and how to address them:     
+1. The script assumes that your e-service main page looks like the screenshot below (there is no suggestion box):
+
+If you do have a suggestion box, then you may either 1) write some suggestions so it disappears or 2) change line :
+
+to:
+
+
+2. [*Element not found* | *element is unclickable exception*] ➔ this is likely to happen when the element within DOM (Document Object Model of the page) is not yet downloaded. To resolve this issue, you may add some sleeping time just before the problematic element as follows: <code> time.sleep(5) # you may increase the time as needed </code><br>
 :
 
 # Contribute
