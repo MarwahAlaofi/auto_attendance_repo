@@ -7,7 +7,7 @@ This script can be used to automate marking student attendance at taibahu.
 Follow the steps below to get things up and running:
 1. Download and install <strong>python</strong>: https://www.python.org/downloads/
 2. Add Python directory to the *environment path*
-3. Download and install **selenium** and **pandas** using the following commands:
+3. Download and install **selenium** and **pandas** using the following commands: <br>
 <code>python -m pip install selenium </code><br>
 <code>python -m pip install pandas</code>
 4. Download **chrome driver**: https://chromedriver.chromium.org/downloads
