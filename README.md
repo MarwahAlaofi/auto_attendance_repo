@@ -25,7 +25,7 @@ then you may either 1) write some suggestions so it disappears or 2) change the 
     <br><code>section_table_rows = driver.find_elements_by_xpath('//*[@id="Table_01"]/tbody/tr[2]/td/table/tbody/tr/td[1]/p[1]/table[2]/tbody/tr')</code> <br>to: <br>
 <code>section_table_rows = driver.find_elements_by_xpath('//*[@id="Table_01"]/tbody/tr[2]/td/table/tbody/tr/td[1]/p[3]/table[2]/tbody/tr')</code> <br>
 
-2. [*Element not found* | *element is unclickable exception*] ➔ this is likely to happen when the element within DOM (Document Object Model of the page) is not yet downloaded. To resolve this issue, you may add some sleeping time just before the problematic element as follows: <code> time.sleep(5) # you may increase the time as needed </code><br>
+2. [*Element not found* | *element is unclickable exception*] ➔ this is likely to happen when the element within DOM (Document Object Model of the page) is not yet downloaded. To resolve this issue, you may add some sleeping time just before the problematic element as follows:<br> <code> time.sleep(5) # you may increase the time as needed </code><br>
 :
 
 # Contribute
