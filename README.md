@@ -20,7 +20,7 @@ Follow the steps below to get things up and running:
 The script is built and primarily tested on **Mac OS**. Some successful testing has been done on **Windows 10** as well.
 <br>The code is built based on some assumptions (e.g., there is no more than one session/day) which may not be true in all cases and many issues are likely to arise while using the script. Below I will add some common issues and how to address them:     
 1. The script assumes that your e-service main page looks like the screenshot below (there is no suggestion box):
-
+<a href="https://ibb.co/jWmHXnQ"><img src="https://i.ibb.co/jWmHXnQ/main-page-suggestion-box.png" alt="main-page-suggestion-box" border="0"></a>
 If you do have a suggestion box, then you may either 1) write some suggestions so it disappears or 2) change line :
 
 to:
