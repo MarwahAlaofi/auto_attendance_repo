@@ -22,10 +22,8 @@ The script is built and primarily tested on **Mac OS**. Some successful testing 
 1. The script assumes that your e-service main page does not include a suggestion box, if it does (like the screenshot below): <br>
 <a href="https://ibb.co/jWmHXnQ"><img src="https://i.ibb.co/jWmHXnQ/main-page-suggestion-box.png" alt="main-page-suggestion-box" border="0"></a> <br>
 then you may either 1) write some suggestions so it disappears or 2) change the paragraph index in the following line:
-    <br><code>section_table_rows = driver.find_elements_by_xpath('//*[@id="Table_01"]/tbody/tr[2]/td/table/tbody/tr/td[1]/p[1]/table[2]/tbody/tr')</code><br>
-
-  <pr>to:</pr>
-    <br><code>section_table_rows = driver.find_elements_by_xpath('//*[@id="Table_01"]/tbody/tr[2]/td/table/tbody/tr/td[1]/p[3]/table[2]/tbody/tr')</code> <br>
+    <br><code>section_table_rows = driver.find_elements_by_xpath('//*[@id="Table_01"]/tbody/tr[2]/td/table/tbody/tr/td[1]/p[1]/table[2]/tbody/tr')</code> <br>to: <br>
+<code>section_table_rows = driver.find_elements_by_xpath('//*[@id="Table_01"]/tbody/tr[2]/td/table/tbody/tr/td[1]/p[3]/table[2]/tbody/tr')</code> <br>
 
 2. [*Element not found* | *element is unclickable exception*] ➔ this is likely to happen when the element within DOM (Document Object Model of the page) is not yet downloaded. To resolve this issue, you may add some sleeping time just before the problematic element as follows: <code> time.sleep(5) # you may increase the time as needed </code><br>
 :
