@@ -1,7 +1,7 @@
 
 #############################
 # Author: Marwah Alaofi
-# Last modified: 3rd of Oct 2020
+# Last modified: 4th of Oct 2020
 #############################
 
 from selenium import webdriver
@@ -46,8 +46,6 @@ ARCHIVE_FOLDER_NAME = 'section_' + SECTION + '_attendance_archive' # change as n
 ######### End of Parameters Section #######
 ###########################################
 
-
-
 # read lecture date from terminal [today is the default]
 if len(sys.argv) > 1:
     lecture_date = datetime.strptime(sys.argv[1],"%d-%m-%y").date()
@@ -57,6 +55,7 @@ else:
 
 
 temp_directory_path = os.path.join(os.getcwd() , "atten_tmp")
+path = os.path.join(temp_directory_path, r"*.csv") # temp file path
 if not os.path.exists(temp_directory_path):
     os.mkdir(temp_directory_path)
 
@@ -136,104 +135,109 @@ driver.find_element_by_xpath('//*[@id="session-report"]/div/div/div/aside/ul/li[
 # wait until the download is completed
 #time.sleep(5)
 
-print('openning the academic services website ...')
-driver.get('https://eas.taibahu.edu.sa/TaibahReg/teachers_login.jsp')
-username = driver.find_element_by_xpath('//*[@id="Table_01"]/tbody/tr[4]/td/table[1]/tbody/tr[2]/td/form/table/tbody/tr[2]/td[2]/input')
-password = driver.find_element_by_xpath('//*[@id="Table_01"]/tbody/tr[4]/td/table[1]/tbody/tr[2]/td/form/table/tbody/tr[3]/td[2]/input')
-ok_button = driver.find_element_by_xpath('//*[@id="Table_01"]/tbody/tr[4]/td/table[1]/tbody/tr[2]/td/form/table/tbody/tr[4]/td[2]/div/input[1]')
+try:
+    print('openning the academic services website ...')
+    driver.get('https://eas.taibahu.edu.sa/TaibahReg/teachers_login.jsp')
+    username = driver.find_element_by_xpath('//*[@id="Table_01"]/tbody/tr[4]/td/table[1]/tbody/tr[2]/td/form/table/tbody/tr[2]/td[2]/input')# removed input
+    password = driver.find_element_by_xpath('//*[@id="Table_01"]/tbody/tr[4]/td/table[1]/tbody/tr[2]/td/form/table/tbody/tr[3]/td[2]/input')
+    ok_button = driver.find_element_by_xpath('//*[@id="Table_01"]/tbody/tr[4]/td/table[1]/tbody/tr[2]/td/form/table/tbody/tr[4]/td[2]/div/input[1]')
 
-print('logging into the academic services website ...')
-username.send_keys(ES_USERNAME)
-password.send_keys(ES_PASSWORD)
-ok_button.click()
+    print('logging into the academic services website ...')
+    username.send_keys(ES_USERNAME)
+    password.send_keys(ES_PASSWORD)
+    ok_button.click()
 
-section_table_rows = driver.find_elements_by_xpath('//*[@id="Table_01"]/tbody/tr[2]/td/table/tbody/tr/td[1]/p[1]/table[2]/tbody/tr')
-for section_row in section_table_rows[1:len(section_table_rows)-1]:
-    section_link = section_row.find_element_by_xpath('td[4]/a')
-    if(section_link.get_attribute('innerText') == SECTION):
-        section_link.click()
-        break;
-#section_link = driver.find_element_by_xpath('//*[@id="Table_01"]/tbody/tr[2]/td/table/tbody/tr/td[1]/p[1]/table[2]/tbody/tr['+ str(SECTION_ROW_NO+1) +']/td[4]/a')
-#section_link.click()
+    section_table_rows = driver.find_elements_by_xpath('//*[@id="Table_01"]/tbody/tr[2]/td/table/tbody/tr/td[1]/p[1]/table[2]/tbody/tr')
+    for section_row in section_table_rows[1:len(section_table_rows)-1]:
+        section_link = section_row.find_element_by_xpath('td[4]/a')
+        if(section_link.get_attribute('innerText') == SECTION):
+            section_link.click()
+            break;
+    #section_link = driver.find_element_by_xpath('//*[@id="Table_01"]/tbody/tr[2]/td/table/tbody/tr/td[1]/p[1]/table[2]/tbody/tr['+ str(SECTION_ROW_NO+1) +']/td[4]/a')
+    #section_link.click()
 
-date = driver.find_element_by_xpath('//*[@id="Table_01"]/tbody/tr[2]/td/table/tbody/tr/td[1]/table/tbody/tr[2]/td/form/table/tbody/tr[1]/td[2]/input')
-duration = driver.find_element_by_xpath('//*[@id="Table_01"]/tbody/tr[2]/td/table/tbody/tr/td[1]/table/tbody/tr[2]/td/form/table/tbody/tr[1]/td[1]/span[1]/select')
-lecture_type = driver.find_element_by_xpath('//*[@id="Table_01"]/tbody/tr[2]/td/table/tbody/tr/td[1]/table/tbody/tr[2]/td/form/table/tbody/tr[3]/td[2]/select')
+    date = driver.find_element_by_xpath('//*[@id="Table_01"]/tbody/tr[2]/td/table/tbody/tr/td[1]/table/tbody/tr[2]/td/form/table/tbody/tr[1]/td[2]/input')
+    duration = driver.find_element_by_xpath('//*[@id="Table_01"]/tbody/tr[2]/td/table/tbody/tr/td[1]/table/tbody/tr[2]/td/form/table/tbody/tr[1]/td[1]/span[1]/select')
+    lecture_type = driver.find_element_by_xpath('//*[@id="Table_01"]/tbody/tr[2]/td/table/tbody/tr/td[1]/table/tbody/tr[2]/td/form/table/tbody/tr[3]/td[2]/select')
 
-print('entering lecture data ...')
-date.send_keys(lecture_date.strftime("%m/%d/%Y"))
-duration.send_keys(MINUTE_ENTRY)
-lecture_type.send_keys("محاضرة")
+    print('entering lecture data ...')
+    date.send_keys(lecture_date.strftime("%m/%d/%Y"))
+    duration.send_keys(MINUTE_ENTRY)
+    lecture_type.send_keys("محاضرة")
 
-# read the attendance csv file and create a dataframe
-# (Name	Username	Role	AttendeeType	First join	Last leave	Total time	Joins)
-print('reading the csv file ...')
+    # read the attendance csv file and create a dataframe
+    # (Name	Username	Role	AttendeeType	First join	Last leave	Total time	Joins)
+    print('reading the csv file ...')
 
-path = os.path.join(temp_directory_path, r"*.csv")
-bb_attendance = pd.read_csv(glob.glob(path)[0])
+    bb_attendance = pd.read_csv(glob.glob(path)[0])
 
-# delete the instructor row
-#bb_attendance.drop(bb_attendance[bb_attendance['Role'] == 'Moderator'].index, inplace = True)
+    # delete the instructor row
+    #bb_attendance.drop(bb_attendance[bb_attendance['Role'] == 'Moderator'].index, inplace = True)
 
-print('marking attendance ...')
+    print('marking attendance ...')
 
-all_rows = driver.find_elements_by_xpath('/html/body/table/tbody/tr[2]/td/table/tbody/tr/td[1]/table/tbody/tr[3]/td/table/tbody/tr')
-student_rows = all_rows[1:len(all_rows)-2] #ignoring header and footer rows (not student rows)
-confrim_checkbox = all_rows[len(all_rows)-2].find_element_by_xpath('th[1]/input') #confirm checkbox
-submit_btn = all_rows[len(all_rows)-1].find_element_by_xpath('th/input') #submit button
-absence_list = []
-student_list = []
-for row in student_rows:
-  student_id = row.find_elements_by_xpath('td')[2].get_attribute('innerText')
-  student_name = row.find_elements_by_xpath('td')[3].get_attribute('innerText')
-  student_absence_count = int(row.find_elements_by_xpath('td')[6].get_attribute('innerText'))
-  student_attendance_checkbox = row.find_element_by_xpath('td/input')
+    all_rows = driver.find_elements_by_xpath('/html/body/table/tbody/tr[2]/td/table/tbody/tr/td[1]/table/tbody/tr[3]/td/table/tbody/tr')
+    student_rows = all_rows[1:len(all_rows)-2] #ignoring header and footer rows (not student rows)
+    confrim_checkbox = all_rows[len(all_rows)-2].find_element_by_xpath('th[1]/input') #confirm checkbox
+    submit_btn = all_rows[len(all_rows)-1].find_element_by_xpath('th/input') #submit button
+    absence_list = []
+    student_list = []
+    for row in student_rows:
+      student_id = row.find_elements_by_xpath('td')[2].get_attribute('innerText')
+      student_name = row.find_elements_by_xpath('td')[3].get_attribute('innerText')
+      student_absence_count = int(row.find_elements_by_xpath('td')[6].get_attribute('innerText'))
+      student_attendance_checkbox = row.find_element_by_xpath('td/input')
 
-  # check the id with the bb attendance list
-  student_attendance_info = bb_attendance[bb_attendance['Username'] == student_id]
+      # check the id with the bb attendance list
+      student_attendance_info = bb_attendance[bb_attendance['Username'] == student_id]
 
-  if len(student_attendance_info) > 0:
-    student_attendance_duration = datetime.strptime(student_attendance_info.iloc[0]['Total time'], "%H:%M:%S")
+      if len(student_attendance_info) > 0:
+        student_attendance_duration = datetime.strptime(student_attendance_info.iloc[0]['Total time'], "%H:%M:%S")
 
-  if len(student_attendance_info) == 0 or student_attendance_duration.hour * 60 + student_attendance_duration.minute < MINIMUM_ACCEPTED_ATTENDANCE_DURATION :
-    student_absence_count += 1
-    student_dic = {'id': student_id, 'name': student_name, 'absence_count':student_absence_count}
-    student_list.append(student_dic)
-    absence_list.append(student_dic)
-    continue
+      if len(student_attendance_info) == 0 or student_attendance_duration.hour * 60 + student_attendance_duration.minute < MINIMUM_ACCEPTED_ATTENDANCE_DURATION :
+        student_absence_count += 1
+        student_dic = {'id': student_id, 'name': student_name, 'absence_count':student_absence_count}
+        student_list.append(student_dic)
+        absence_list.append(student_dic)
+        continue
 
-  student_dic = {'id': student_id, 'name': student_name, 'absence_count':student_absence_count}
-  student_list.append(student_dic)
-  student_attendance_checkbox.click()
+      student_dic = {'id': student_id, 'name': student_name, 'absence_count':student_absence_count}
+      student_list.append(student_dic)
+      student_attendance_checkbox.click()
 
-# confirm attendance
-confrim_checkbox.click()
+    # confirm attendance
+    confrim_checkbox.click()
 
-# submit the form
-#submit_btn.click()
+    # submit the form
+    #submit_btn.click()
 
-print('\n\n ******** Attendance Marking is DONE **********')
+    print('\n\n ******** Attendance Marking is DONE **********')
 
-#print absent students
-print("-----------------------------------")
-print("---- absent student list ----------")
-for s in absence_list:
-    print(s)
-print("-----------------------------------")
-
-#print students with high absence count
-print("---- student with denial risk -----")
-for s in student_list:
-    if s['absence_count'] >= HIGH_ABSENCE_COUNT:
+    #print absent students
+    print("-----------------------------------")
+    print("---- absent student list ----------")
+    for s in absence_list:
         print(s)
-print("-----------------------------------")
+    print("-----------------------------------")
 
-# send notification/email if absence is more than the threshold
-###############################################################
+    #print students with high absence count
+    print("---- student with denial risk -----")
+    for s in student_list:
+        if s['absence_count'] >= HIGH_ABSENCE_COUNT:
+            print(s)
+    print("-----------------------------------")
 
-# move the attendance file to the archive folder
-if not os.path.exists(ARCHIVE_FOLDER_NAME):
-  os.mkdir(ARCHIVE_FOLDER_NAME)
-file_name = SECTION + '_' + lecture_date.strftime("%d-%m-%y") + '.csv'
-os.replace(glob.glob(path)[0], os.path.join(ARCHIVE_FOLDER_NAME, file_name))
-print('attendance csv file is archived at ' + os.path.join(os.getcwd(), ARCHIVE_FOLDER_NAME) + '\n')
+except Exception as e:
+    logging.error(traceback.format_exc())
+
+    # send notification/email if absence is more than the threshold
+    ###############################################################
+finally:
+    # move the attendance file to the archive folder
+    if not os.path.exists(ARCHIVE_FOLDER_NAME):
+      os.mkdir(ARCHIVE_FOLDER_NAME)
+    file_name = SECTION + '_' + lecture_date.strftime("%d-%m-%y") + '.csv'
+    os.replace(glob.glob(path)[0], os.path.join(ARCHIVE_FOLDER_NAME, file_name))
+    # remove the temp directory
+    #os.rmdir(temp_directory_path)
+    print('attendance csv file is archived at ' + os.path.join(os.getcwd(), ARCHIVE_FOLDER_NAME) + '\n')
