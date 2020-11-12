@@ -1,7 +1,7 @@
 
 #############################
 # Author: Marwah Alaofi
-# Last modified: 4th of Oct 2020
+# Last modified: 12th of Nov 2020
 #############################
 
 from selenium import webdriver
@@ -117,7 +117,7 @@ session = driver.find_element_by_xpath('//*[@id="body-content"]/div[3]/ul/li')
 session.find_elements_by_tag_name('button')[1].click()
 
 #click on view report and go to view report 1s page
-driver.find_element_by_xpath('//*[starts-with(@id,"session")]/ul/li[2]/a').click();
+driver.find_element_by_xpath('//*[starts-with(@id,"session")]/ul/li[2]/button').click();
 
 time.sleep(5)
 
